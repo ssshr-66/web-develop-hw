@@ -8,3 +8,55 @@
 
   引入脚本：api.js、utils.js、index.js
 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>HR管理系统</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <style>
+        .header { background: white; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .title { font-size: 24px; color: #333; }
+        .user { color: #666; }
+        .logout { margin-left: 20px; }
+        .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .menu { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .menu-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; cursor: pointer; transition: transform 0.2s; }
+        .menu-card:hover { transform: translateY(-4px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .menu-card h3 { font-size: 20px; margin-bottom: 10px; color: #333; }
+        .menu-card p { color: #666; font-size: 14px; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="title">HR管理系统</div>
+    <div>
+        <span class="user" id="user"></span>
+        <button class="btn-danger logout" onclick="logout()">登出</button>
+    </div>
+</div>
+<div class="container">
+    <div class="menu">
+        <div class="menu-card" onclick="navigate('employee.html')">
+            <h3>员工管理</h3>
+            <p>员工信息的增删改查</p>
+        </div>
+        <div class="menu-card" onclick="navigate('department.html')">
+            <h3>部门管理</h3>
+            <p>部门信息管理</p>
+        </div>
+        <div class="menu-card" onclick="navigate('attendance.html')">
+            <h3>考勤管理</h3>
+            <p>考勤录入与查询</p>
+        </div>
+        <div class="menu-card" onclick="navigate('stats.html')">
+            <h3>统计报表</h3>
+            <p>各类统计数据</p>
+        </div>
+    </div>
+</div>
+<script src="../js/api.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/index.js"></script>
+</body>
+</html>

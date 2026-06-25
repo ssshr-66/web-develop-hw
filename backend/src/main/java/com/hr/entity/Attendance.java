@@ -11,3 +11,22 @@
 //   - updateTime      更新时间
 //
 // 使用 MyBatis-Plus 注解映射，Lombok @Data 生成 getter/setter。
+package com.hr.entity;
+
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+@Data
+@TableName("t_attendance")
+public class Attendance {
+    @TableId(type = IdType.AUTO)
+    private Long id;
+    private Long employeeId;
+    private LocalDate attendanceDate;
+    private String status;
+    private String remark;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
+}
