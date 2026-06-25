@@ -27,6 +27,34 @@ async function request(url, options = {}) {
     }
 }
 
+// ---------- Mock 数据持久化 ----------
+
+const STORAGE_KEY = 'hr_mock_data';
+
+function _saveMockData() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        employees: _employees,
+        departments: _departments,
+        attendances: _attendances,
+        admins: _admins,
+        nextId: _nextId
+    }));
+}
+
+function _loadMockData() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+        const data = JSON.parse(saved);
+        _employees = data.employees;
+        _departments = data.departments;
+        _attendances = data.attendances;
+        _admins = data.admins;
+        _nextId = data.nextId;
+        return true;
+    }
+    return false;
+}
+
 // ---------- Mock 数据 ----------
 
 let _nextId = { employee: 11, department: 6, attendance: 21, admin: 2 };
@@ -34,7 +62,7 @@ let _nextId = { employee: 11, department: 6, attendance: 21, admin: 2 };
 // 当前登录用户（模拟 session）
 let _currentUser = null;
 
-// 部门数据
+// 部门数据（默认值）
 let _departments = [
     { id: 1, deptCode: 'DEV', deptName: '研发部', createTime: '2024-01-01T10:00:00', updateTime: '2024-01-01T10:00:00' },
     { id: 2, deptCode: 'HR', deptName: '人力资源部', createTime: '2024-01-02T10:00:00', updateTime: '2024-01-02T10:00:00' },
@@ -85,6 +113,9 @@ let _attendances = [
 let _admins = [
     { id: 1, username: 'admin', password: 'admin123', createTime: '2024-01-01T00:00:00', updateTime: '2024-01-01T00:00:00' }
 ];
+
+// 加载本地存储的数据（如果存在）
+_loadMockData();
 
 // ---------- 辅助函数 ----------
 
@@ -139,6 +170,7 @@ const authAPI = {
             _admins.push(newUser);
             _currentUser = { id: newUser.id, username: newUser.username };
             sessionStorage.setItem('mockUser', JSON.stringify(_currentUser));
+            _saveMockData();
             return _delay(_ok(_currentUser));
         }
         return await request('/api/auth/register', {
@@ -222,6 +254,7 @@ const employeeAPI = {
                 deleted: 0
             };
             _employees.push(newEmp);
+            _saveMockData();
             return _delay(_ok(null));
         }
         return await request('/api/employees', {
@@ -243,6 +276,7 @@ const employeeAPI = {
                 phone: data.phone !== undefined ? data.phone : emp.phone,
                 updateTime: _now()
             });
+            _saveMockData();
             return _delay(_ok(null));
         }
         return await request(`/api/employees/${id}`, {
@@ -255,6 +289,7 @@ const employeeAPI = {
         if (API_CONFIG.MOCK_MODE) {
             const emp = _employees.find(e => e.id === id);
             if (emp) emp.deleted = 1;
+            _saveMockData();
             return _delay(_ok(null));
         }
         return await request(`/api/employees/${id}`, { method: 'DELETE' });
@@ -289,6 +324,7 @@ const departmentAPI = {
                 updateTime: _now()
             };
             _departments.push(newDept);
+            _saveMockData();
             return _delay(_ok(null));
         }
         return await request('/api/departments', {
@@ -304,6 +340,7 @@ const departmentAPI = {
             dept.deptCode = data.deptCode || dept.deptCode;
             dept.deptName = data.deptName || dept.deptName;
             dept.updateTime = _now();
+            _saveMockData();
             return _delay(_ok(null));
         }
         return await request(`/api/departments/${id}`, {
@@ -354,6 +391,7 @@ const attendanceAPI = {
                 updateTime: _now()
             };
             _attendances.push(newAtt);
+            _saveMockData();
             return _delay(_ok(null));
         }
         return await request('/api/attendance', {
@@ -396,6 +434,7 @@ const attendanceAPI = {
             att.status = data.status || att.status;
             att.remark = data.remark !== undefined ? data.remark : att.remark;
             att.updateTime = _now();
+            _saveMockData();
             return _delay(_ok(null));
         }
         return await request(`/api/attendance/${id}`, {
@@ -408,6 +447,7 @@ const attendanceAPI = {
         if (API_CONFIG.MOCK_MODE) {
             const idx = _attendances.findIndex(a => a.id === id);
             if (idx !== -1) _attendances.splice(idx, 1);
+            _saveMockData();
             return _delay(_ok(null));
         }
         return await request(`/api/attendance/${id}`, { method: 'DELETE' });
