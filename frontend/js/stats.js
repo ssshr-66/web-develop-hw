@@ -1,8 +1,79 @@
-// stats.js
-// 统计报表页面逻辑（stats.html）
-//
-//   - init()             页面初始化：校验登录，并行加载四类统计
-//   - loadOverview()     渲染总览统计（员工总数、部门总数）
-//   - loadDepartment()   渲染各部门人数统计
-//   - loadHire()         渲染入职统计（本月/本年入职）
-//   - loadAttendance()   渲染考勤统计（总记录数、正常出勤、出勤率）
+async function init() {
+    await checkAuth();
+    await Promise.all([
+        loadOverview(),
+        loadDepartment(),
+        loadHire(),
+        loadAttendance()
+    ]);
+}
+
+async function loadOverview() {
+    const data = await statsAPI.getOverview();
+    if (data.code === 200) {
+        const d = data.data;
+        document.getElementById('overview').innerHTML = `
+            <div class="stat-card">
+                <div class="stat-value">${d.totalEmployees}</div>
+                <div class="stat-label">员工总数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${d.totalDepartments}</div>
+                <div class="stat-label">部门总数</div>
+            </div>
+        `;
+    }
+}
+
+async function loadDepartment() {
+    const data = await statsAPI.getDepartment();
+    if (data.code === 200) {
+        const depts = data.data;
+        document.getElementById('department').innerHTML = Object.entries(depts).map(([name, count]) => `
+            <div class="dept-item">
+                <div class="dept-name">${name}</div>
+                <div class="dept-count">${count}人</div>
+            </div>
+        `).join('');
+    }
+}
+
+async function loadHire() {
+    const data = await statsAPI.getHire();
+    if (data.code === 200) {
+        const d = data.data;
+        document.getElementById('hire').innerHTML = `
+            <div class="stat-card">
+                <div class="stat-value">${d.thisMonth}</div>
+                <div class="stat-label">本月入职</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${d.thisYear}</div>
+                <div class="stat-label">本年入职</div>
+            </div>
+        `;
+    }
+}
+
+async function loadAttendance() {
+    const data = await statsAPI.getAttendance();
+    if (data.code === 200) {
+        const d = data.data;
+        document.getElementById('attendance').innerHTML = `
+            <div class="stat-card">
+                <div class="stat-value">${d.total}</div>
+                <div class="stat-label">总记录数</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${d.normal}</div>
+                <div class="stat-label">正常出勤</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${d.rate}%</div>
+                <div class="stat-label">出勤率</div>
+            </div>
+        `;
+    }
+}
+
+init();

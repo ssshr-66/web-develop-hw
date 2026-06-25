@@ -1,9 +1,32 @@
-<!--
-  login.html - 登录/注册页面
-
-  页面结构：
-    - 居中卡片表单：用户名输入框、密码输入框、错误提示、提交按钮
-    - 模式切换链接：在「登录」与「注册」之间切换
-
-  引入脚本：api.js、utils.js、login.js
--->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>登录注册 - HR系统</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 350px; }
+        h2 { text-align: center; margin-bottom: 30px; color: #333; }
+        input { width: 100%; margin: 10px 0; }
+        button { width: 100%; margin: 10px 0; }
+        .switch { text-align: center; margin-top: 15px; color: #666; font-size: 14px; cursor: pointer; }
+        .switch span { color: #1890ff; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 id="title">登录</h2>
+    <input type="text" id="username" placeholder="用户名">
+    <input type="password" id="password" placeholder="密码">
+    <div class="error" id="error"></div>
+    <button class="btn-primary" onclick="submit()">登录</button>
+    <div class="switch" onclick="toggleMode()">
+        <span id="switchText">没有账号？注册</span>
+    </div>
+</div>
+<script src="../js/api.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/login.js"></script>
+</body>
+</html>

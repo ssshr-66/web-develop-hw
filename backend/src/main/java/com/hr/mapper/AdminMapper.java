@@ -1,5 +1,9 @@
-// AdminMapper.java
-// 管理员数据访问接口（Mapper）
-//
-// 继承 MyBatis-Plus 的 BaseMapper<Admin>，
-// 自动提供对 t_admin 表的增删改查（CRUD）能力，无需手写 SQL。
+package com.hr.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hr.entity.Admin;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface AdminMapper extends BaseMapper<Admin> {
+}

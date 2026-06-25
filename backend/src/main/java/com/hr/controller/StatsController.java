@@ -1,10 +1,34 @@
-// StatsController.java
-// 统计报表控制器
-//
-// 提供各类统计数据的 REST API（路径前缀 /api/stats）：
-//   - GET /api/stats/overview    总览统计（员工总数、部门总数）
-//   - GET /api/stats/department  各部门人数统计
-//   - GET /api/stats/hire        入职统计（本月/本年入职人数）
-//   - GET /api/stats/attendance  考勤统计（总记录数、正常数、出勤率）
-//
-// 依赖 StatsService 实现聚合统计逻辑。
+package com.hr.controller;
+
+import com.hr.dto.Result;
+import com.hr.service.StatsService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/stats")
+@RequiredArgsConstructor
+public class StatsController {
+    private final StatsService statsService;
+
+    @GetMapping("/overview")
+    public Result<Map<String, Object>> overview() {
+        return Result.success(statsService.overview());
+    }
+
+    @GetMapping("/department")
+    public Result<Map<String, Long>> department() {
+        return Result.success(statsService.departmentStats());
+    }
+
+    @GetMapping("/hire")
+    public Result<Map<String, Object>> hire() {
+        return Result.success(statsService.hireStats());
+    }
+
+    @GetMapping("/attendance")
+    public Result<Map<String, Object>> attendance() {
+        return Result.success(statsService.attendanceStats());
+    }
+}

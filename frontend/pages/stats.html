@@ -1,12 +1,49 @@
-<!--
-  stats.html - 统计报表页面
-
-  页面结构（四个统计区块）：
-    - 总览统计：员工总数、部门总数
-    - 部门统计：各部门人数
-    - 入职统计：本月入职、本年入职
-    - 考勤统计：总记录数、正常出勤、出勤率
-    - 顶部提供返回首页链接
-
-  引入脚本：api.js、utils.js、stats.js
--->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>统计报表 - HR系统</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <style>
+        .header { background: white; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .back { color: #1890ff; cursor: pointer; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .section { background: white; padding: 25px; margin-bottom: 20px; border-radius: 8px; }
+        .section h3 { margin-bottom: 20px; color: #333; border-bottom: 2px solid #1890ff; padding-bottom: 10px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .stat-card { background: #f9f9f9; padding: 20px; border-radius: 6px; text-align: center; border: 1px solid #e8e8e8; }
+        .stat-value { font-size: 32px; font-weight: bold; color: #1890ff; margin-bottom: 8px; }
+        .stat-label { color: #666; font-size: 14px; }
+        .dept-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .dept-item { background: #f0f9ff; padding: 15px; border-radius: 6px; text-align: center; border: 1px solid #bae7ff; }
+        .dept-name { font-weight: 600; color: #333; margin-bottom: 5px; }
+        .dept-count { font-size: 24px; color: #1890ff; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <span class="back" onclick="navigate('index.html')">← 返回首页</span>
+</div>
+<div class="container">
+    <div class="section">
+        <h3>总览统计</h3>
+        <div class="stats" id="overview"></div>
+    </div>
+    <div class="section">
+        <h3>部门统计</h3>
+        <div class="dept-list" id="department"></div>
+    </div>
+    <div class="section">
+        <h3>入职统计</h3>
+        <div class="stats" id="hire"></div>
+    </div>
+    <div class="section">
+        <h3>考勤统计</h3>
+        <div class="stats" id="attendance"></div>
+    </div>
+</div>
+<script src="../js/api.js"></script>
+<script src="../js/utils.js"></script>
+<script src="../js/stats.js"></script>
+</body>
+</html>
