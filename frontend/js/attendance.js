@@ -50,8 +50,7 @@ async function loadData() {
                 <td>${a.status}</td>
                 <td>${a.remark || ''}</td>
                 <td class="actions">
-                    <button class="btn-primary" onclick="edit(${a.id})">编辑</button>
-                    <button class="btn-danger" onclick="del(${a.id})">删除</button>
+                    <button class="btn-primary" onclick="window.edit(${a.id})">编辑</button>
                 </td>
             </tr>
         `).join('');
@@ -144,5 +143,16 @@ function nextPage() {
     page++;
     loadData();
 }
+
+// 暴露函数到全局作用域供 HTML onclick 使用
+window.loadData = loadData;
+window.loadStats = loadStats;
+window.showModal = showModal;
+window.hideModal = hideModal;
+window.edit = edit;
+window.save = save;
+window.del = del;
+window.prevPage = prevPage;
+window.nextPage = nextPage;
 
 init();

@@ -32,8 +32,7 @@ async function loadData() {
                 <td>${e.hireDate || ''}</td>
                 <td>${e.phone || ''}</td>
                 <td class="actions">
-                    <button class="btn-primary" onclick="edit(${e.id})">编辑</button>
-                    <button class="btn-danger" onclick="del(${e.id})">删除</button>
+                    <button class="btn-primary" onclick="window.edit(${e.id})">编辑</button>
                 </td>
             </tr>
         `).join('');
@@ -92,7 +91,7 @@ async function save() {
     }
 }
 
-async function del(id) {
+async function deleteEmployee(id) {
     if (!confirm('确定删除？')) return;
     const data = await employeeAPI.delete(id);
     if (data.code === 200) {
@@ -111,5 +110,15 @@ function nextPage() {
     page++;
     loadData();
 }
+
+// 暴露函数到全局作用域供 HTML onclick 使用
+window.loadData = loadData;
+window.showModal = showModal;
+window.hideModal = hideModal;
+window.edit = edit;
+window.save = save;
+window.deleteEmployee = deleteEmployee;
+window.prevPage = prevPage;
+window.nextPage = nextPage;
 
 init();
